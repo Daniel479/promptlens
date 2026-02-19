@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PromptLens — Upgrade</title>
-<script src="https://js.stripe.com/v3/"></script>
 <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -578,31 +577,24 @@ footer a:hover { color: rgba(255,255,255,0.6); }
 // ════════════════════════════════════════════════════════════════
 const STRIPE_PK = 'pk_test_51T2bvjJBvW4sAl6iODYPGC2MfkfIGTbOjtiPEXmmGpU1TFIeARdvZAkI8jml7jg32TsQr8P4cXFITLueUsOtHgTn00r0MBEtMk';
 
-// ⬇️ Cole aqui os Price IDs dos seus produtos no Stripe Dashboard
-//    Criar em: https://dashboard.stripe.com/products
-//    Formato: price_xxxxxxxxxxxxxxxxxxxxxx
-const PRICE_IDS = {
+// ⬇️ Cole aqui os Payment Links do Stripe
+//    Criar em: https://dashboard.stripe.com/payment-links
+//    Clique em "+ New" para cada plano e período
+const PAYMENT_LINKS = {
   starter: {
-    monthly: 'price_1T2f7IJBvW4sAl6iebb83JC4',
-    annual:  'price_1T2f83JBvW4sAl6iav9Lpoej'
+    monthly: 'https://buy.stripe.com/SEU_LINK_STARTER_MENSAL',
+    annual:  'https://buy.stripe.com/SEU_LINK_STARTER_ANUAL'
   },
   pro: {
-    monthly: 'price_1T2f8ZJBvW4sAl6i2sDvQwIo',
-    annual:  'price_1T2f9AJBvW4sAl6idpsUYIRL'
+    monthly: 'https://buy.stripe.com/SEU_LINK_PRO_MENSAL',
+    annual:  'https://buy.stripe.com/SEU_LINK_PRO_ANUAL'
   },
   team: {
-    monthly: 'price_1T2f9sJBvW4sAl6ivZSA6j9P',
-    annual:  'price_1T2fAVJBvW4sAl6i0gA7zCk1'
+    monthly: 'https://buy.stripe.com/SEU_LINK_TEAM_MENSAL',
+    annual:  'https://buy.stripe.com/SEU_LINK_TEAM_ANUAL'
   }
 };
-
-// URL para onde o Stripe redireciona após pagamento bem-sucedido
-const SUCCESS_URL = window.location.origin + '/success.html';
-// URL para onde o Stripe redireciona se o usuário cancelar
-const CANCEL_URL  = window.location.href;
 // ════════════════════════════════════════════════════════════════
-
-const stripe = Stripe(STRIPE_PK);
 
 const PRICES = {
   starter: { monthly: '$4', annual: '$2.40', annualTotal: '$28.80' },
@@ -632,45 +624,25 @@ function setBilling(cycle) {
   });
 }
 
-async function checkout(plan, e) {
+function checkout(plan, e) {
   e.stopPropagation();
 
-  const priceId = PRICE_IDS[plan]?.[billingCycle];
+  const link = PAYMENT_LINKS[plan]?.[billingCycle];
 
-  // Show loading state
   const ring  = document.getElementById('ring-' + plan);
   const label = document.getElementById('label-' + plan);
-  ring.style.display  = 'block';
-  label.textContent   = 'Abrindo checkout…';
+  ring.style.display = 'block';
+  label.textContent  = 'Abrindo checkout…';
 
-  // Guard: Price ID not yet configured
-  if(!priceId || priceId.startsWith('price_') && priceId.endsWith('_ID')) {
-    ring.style.display = 'none';
-    label.textContent  = BTN_LABELS[plan];
-    showSetupGuide(plan);
-    return;
-  }
-
-  try {
-    const { error } = await stripe.redirectToCheckout({
-      lineItems: [{ price: priceId, quantity: 1 }],
-      mode: 'subscription',
-      successUrl: SUCCESS_URL,
-      cancelUrl:  CANCEL_URL,
-      billingAddressCollection: 'auto',
-      locale: 'auto'
-    });
-
-    if(error) {
+  setTimeout(() => {
+    if(link && !link.includes('SEU_LINK')) {
+      window.location.href = link;
+    } else {
       ring.style.display = 'none';
       label.textContent  = BTN_LABELS[plan];
-      showError(error.message);
+      showSetupGuide(plan);
     }
-  } catch(err) {
-    ring.style.display = 'none';
-    label.textContent  = BTN_LABELS[plan];
-    showError(err.message);
-  }
+  }, 600);
 }
 
 function showSetupGuide(plan) {
@@ -684,13 +656,13 @@ function showSetupGuide(plan) {
         Para ativar o checkout do <strong style="color:rgba(255,255,255,0.7)">${plan}</strong>, você precisa criar o produto no Stripe e colar o Price ID no código.
       </p>
       <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;text-align:left;font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.5);line-height:2;margin-bottom:1.5rem;">
-        1. Acesse <span style="color:#fff">dashboard.stripe.com/products</span><br>
-        2. Crie um produto com preço recorrente<br>
-        3. Copie o <span style="color:#fff">Price ID</span> (começa com <span style="color:#fff">price_</span>)<br>
-        4. Cole em <span style="color:#fff">PRICE_IDS.${plan}.${billingCycle}</span> no script
+        1. Acesse <span style="color:#fff">dashboard.stripe.com/payment-links</span><br>
+        2. Clique em <span style="color:#fff">"+ New"</span><br>
+        3. Selecione o produto <span style="color:#fff">${plan} (${billingCycle})</span><br>
+        4. Copie o link gerado e cole em <span style="color:#fff">PAYMENT_LINKS.${plan}.${billingCycle}</span>
       </div>
-      <a href="https://dashboard.stripe.com/products" target="_blank" style="display:block;width:100%;padding:0.85rem;background:#fff;color:#000;border-radius:10px;font-family:'Black Ops One',sans-serif;font-size:0.85rem;letter-spacing:0.15em;text-decoration:none;margin-bottom:0.75rem;box-shadow:0 0 30px rgba(255,255,255,0.15);transition:all 0.2s;">
-        Abrir Stripe Dashboard →
+      <a href="https://dashboard.stripe.com/payment-links" target="_blank" style="display:block;width:100%;padding:0.85rem;background:#fff;color:#000;border-radius:10px;font-family:'Black Ops One',sans-serif;font-size:0.85rem;letter-spacing:0.15em;text-decoration:none;margin-bottom:0.75rem;box-shadow:0 0 30px rgba(255,255,255,0.15);transition:all 0.2s;">
+        Criar Payment Link →
       </a>
       <button onclick="this.closest('[style*=fixed]').remove()" style="background:none;border:none;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;cursor:pointer;">Fechar</button>
     </div>
