@@ -78,7 +78,7 @@ body::after {
 
 .logo-3d {
   font-family: 'Black Ops One', sans-serif;
-  font-size: clamp(4rem, 10vw, 8rem);
+  font-size: clamp(2.2rem, 8vw, 8rem);
   line-height: 1;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -176,6 +176,37 @@ body::after {
 @media (max-width: 920px) {
   .grid { grid-template-columns: 1fr; }
   .header-row { justify-content: center; }
+}
+
+@media (max-width: 600px) {
+  .wrapper { padding: 0 1rem 3rem; }
+
+  .hero { padding: 2rem 0 1.5rem; }
+
+  .logo-3d { font-size: clamp(2rem, 13vw, 3.5rem) !important; }
+  .logo-3d::after { display: none; }
+
+  .logo-tagline { font-size: 0.55rem; letter-spacing: 0.2em; }
+
+  .header-row { gap: 0.5rem; margin-top: 1rem; }
+  .badge-neon { font-size: 0.55rem; padding: 0.3rem 0.75rem; }
+  .usage-counter { font-size: 0.55rem; padding: 0.3rem 0.75rem; }
+
+  .card { padding: 1.2rem; }
+  .card-label { font-size: 0.52rem; }
+
+  .dropzone { min-height: 160px; }
+
+  .options-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+  .btn-analyze { padding: 0.85rem; font-size: 0.85rem; }
+
+  .output-card { min-height: 300px; }
+  .json-wrap { max-height: 340px; font-size: 0.65rem; }
+
+  .bottom-bar { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+
+  .guide-step { font-size: 0.72rem; }
 }
 
 /* ── Cards ── */
