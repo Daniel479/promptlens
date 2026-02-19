@@ -405,6 +405,13 @@ footer {
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 4px; }
+
+/* ── Footer X button hover ── */
+footer a[href*="x.com"]:hover {
+  border-color: rgba(255,255,255,0.3) !important;
+  color: #fff !important;
+  box-shadow: 0 0 15px rgba(255,255,255,0.05);
+}
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
@@ -558,12 +565,37 @@ footer {
   </div>
 
   <footer>
-  PromptLens &nbsp;&middot;&nbsp; No data stored &nbsp;&middot;&nbsp; 2025 &nbsp;&middot;&nbsp;
-  <a href="https://x.com/Daniel_vieiraoo" target="_blank" rel="noopener">𝕏 @Daniel_vieiraoo</a>
-  <br style="margin-bottom:0.6rem;display:block;content:''">
-  <span style="opacity:0.5;">If PromptLens saved you time, consider buying me a coffee ☕</span>
-  <br>
-  <span style="font-size:0.5rem;letter-spacing:0.08em;opacity:0.35;word-break:break-all;">BTC &nbsp;·&nbsp; 1689EjXLVR8tHcJNTvXc9uWsbgQxDRUTyV</span>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:0.9rem;">
+    <div style="display:flex;align-items:center;gap:0.5rem;font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);">
+      PromptLens &nbsp;&middot;&nbsp; No data stored &nbsp;&middot;&nbsp; 2025
+    </div>
+
+    <!-- Twitter / X -->
+    <a href="https://x.com/Daniel_vieiraoo" target="_blank" rel="noopener"
+       style="display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none;
+              padding:0.4rem 0.9rem;border:1px solid rgba(255,255,255,0.1);border-radius:999px;
+              transition:all 0.2s;color:rgba(255,255,255,0.5);font-family:'DM Mono',monospace;
+              font-size:0.62rem;letter-spacing:0.1em;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+      @Daniel_vieiraoo
+    </a>
+
+    <!-- BTC -->
+    <div style="display:flex;align-items:center;gap:0.6rem;">
+      <span style="font-family:'DM Mono',monospace;font-size:0.58rem;color:rgba(255,255,255,0.3);letter-spacing:0.05em;">
+        If PromptLens saved you time, consider buying me a coffee ☕
+      </span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:0.4rem 0.8rem;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;opacity:0.5;">
+        <path d="M17.06 11.57c.49-.37.83-.88.83-1.57 0-1.66-1.35-2.5-3-2.5H9v9h6.17c1.76 0 3.17-1.34 3.17-3 0-.91-.46-1.68-1.28-1.93zM11 9h2.5c.55 0 1 .45 1 1s-.45 1-1 1H11V9zm3 6h-3v-2h3c.55 0 1 .45 1 1s-.45 1-1 1z" fill="currentColor" opacity="0.6"/>
+        <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none"/>
+      </svg>
+      <span style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.06em;color:rgba(255,255,255,0.45);word-break:break-all;">1689EjXLVR8tHcJNTvXc9uWsbgQxDRUTyV</span>
+    </div>
+  </div>
 </footer>
 </div>
 
